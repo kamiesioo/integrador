@@ -2,8 +2,27 @@
 -- INTEGRADOR BASES DE DATOS - BIBLIOTECA
 -- Parte 2: pruebas (ejecutar DESPUÉS de 01_estructura_datos_y_logica.sql)
 -- Ejecutar en orden: los resultados esperados dependen de ese orden.
--- Las pruebas del final (marcadas "DA ERROR") están hechas para fallar.
+-- El archivo corre completo sin cortarse: las pruebas que "deben dar error"
+-- se ejecutan con la función de ayuda probar_error(), que captura el error
+-- y lo muestra como resultado en lugar de frenar el script.
+-- (Algunos editores web, como el de Supabase, muestran solo el resultado de
+-- la ÚLTIMA consulta: por eso las pruebas de error van al final.)
 -- =====================================================================
+
+-- ---------- FUNCIÓN DE AYUDA (solo para probar) ----------
+-- Ejecuta una sentencia y devuelve el mensaje de error si falla.
+CREATE OR REPLACE FUNCTION probar_error(p_sentencia TEXT)
+RETURNS TEXT
+LANGUAGE plpgsql
+AS $$
+BEGIN
+    EXECUTE p_sentencia;
+    RETURN 'SIN ERROR (inesperado)';
+EXCEPTION WHEN OTHERS THEN
+    RETURN 'ERROR: ' || SQLERRM;
+END;
+$$;
+
 
 -- ---------- FUNCIONES ----------
 
@@ -61,14 +80,16 @@ SELECT * FROM auditoria_prestamos;
 
 
 -- =====================================================================
--- PRUEBAS QUE DEBEN DAR ERROR (ejecutar de a una)
+-- PRUEBAS QUE DEBEN DAR ERROR (van al final, en una sola consulta)
+-- Esperado: las 3 filas muestran un ERROR con el mensaje indicado.
 -- =====================================================================
 
--- DA ERROR: "el socio 4 no está activo"
-INSERT INTO prestamos (id_socio, id_libro) VALUES (4, 1);
-
--- DA ERROR: "el libro 5 no tiene stock"
-INSERT INTO prestamos (id_socio, id_libro) VALUES (1, 5);
-
--- DA ERROR: "El préstamo 1 ya fue devuelto el 2026-09-10"
-CALL devolver_libro(1);
+SELECT prueba, probar_error(sentencia) AS resultado
+FROM (VALUES
+    ('Socio 4 (inactivo) pide el libro 1',
+     'INSERT INTO prestamos (id_socio, id_libro) VALUES (4, 1)'),
+    ('Socio 1 pide el libro 5 (sin stock)',
+     'INSERT INTO prestamos (id_socio, id_libro) VALUES (1, 5)'),
+    ('Devolver el préstamo 1 (ya devuelto)',
+     'CALL devolver_libro(1)')
+) AS t(prueba, sentencia);

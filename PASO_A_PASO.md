@@ -5,7 +5,8 @@ Motor usado: **PostgreSQL** (PL/pgSQL). Archivos: `01_estructura_datos_y_logica.
 ## Cómo probarlo
 1. Crear una base vacía y ejecutar completo `01_estructura_datos_y_logica.sql` (se puede re-ejecutar, borra y recrea todo).
 2. Ejecutar `02_pruebas.sql` en orden. Los resultados esperados están en cada comentario `-- Esperado`.
-3. Las últimas 3 sentencias de `02_pruebas.sql` **deben dar error**; hay que correrlas de a una.
+3. Las pruebas que **deben dar error** están al final de `02_pruebas.sql` y se ejecutan con una función de ayuda (`probar_error`) que captura el error y lo muestra como resultado, así el script corre completo sin cortarse. Si el editor muestra solo el último resultado (como Supabase), se ve esa tabla con los 3 errores esperados.
+4. También se pueden correr a mano los comandos que figuran abajo; en ese caso los que dicen **ERROR** van a mostrar el error (es lo esperado) y hay que ejecutarlos de a uno.
 
 ## Paso 1 – Tablas y datos
 Creé `libros`, `socios`, `prestamos` (con claves foráneas a socios y libros) y `auditoria_prestamos`, y cargué los datos de prueba (5 libros, 5 socios, 6 préstamos). Los préstamos de ejemplo se cargan **antes** de crear los triggers, así que no modifican el stock.
