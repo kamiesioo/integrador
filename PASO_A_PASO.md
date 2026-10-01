@@ -3,9 +3,8 @@
 Motor usado: **PostgreSQL** (PL/pgSQL). Todo lo que se crea está en `01_estructura_datos_y_logica.sql`.
 
 ## Cómo probarlo
-1. Crear una base vacía y ejecutar completo `01_estructura_datos_y_logica.sql` (se puede re-ejecutar, borra y recrea todo).
-2. Ir probando los comandos de abajo **en orden**, de a uno: algunos resultados dependen de los anteriores (por ejemplo, el préstamo 7 se crea en el Paso 4 y se borra en el Bonus).
-3. Las pruebas marcadas con ⚠️ **DA ERROR SÍ O SÍ** son las que tienen que fallar: el error es el resultado correcto, porque el trigger o el procedimiento está bloqueando la operación. Hay que ejecutarlas de a una, porque si se corren juntas con otras, el error frena todo lo que viene después.
+1. Ir probando los comandos de abajo **en orden**, de a uno: algunos resultados dependen de los anteriores (por ejemplo, el préstamo 7 se crea en el Paso 4 y se borra en el Bonus).
+2. Las pruebas marcadas con ⚠️ **DA ERROR SÍ O SÍ** son las que tienen que fallar: el error es el resultado correcto, porque el trigger o el procedimiento está bloqueando la operación. Hay que ejecutarlas de a una, porque si se corren juntas con otras, el error frena todo lo que viene después.
 
 ## Paso 1 – Tablas y datos
 Creé `libros`, `socios`, `prestamos` (con claves foráneas a socios y libros) y `auditoria_prestamos`, y cargué los datos de prueba (5 libros, 5 socios, 6 préstamos). Los préstamos de ejemplo se cargan **antes** de crear los triggers, así que no modifican el stock.
